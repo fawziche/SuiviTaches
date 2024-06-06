@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS tTaches (
     tempsPasse int(5),
     tempsPrevu int(5),
     Description TEXT,
-    PRIMARY KEY(id),,
+    PRIMARY KEY(id),
     FOREIGN KEY (projet_id) 
         REFERENCES tProjets (id) 
         ON UPDATE RESTRICT 

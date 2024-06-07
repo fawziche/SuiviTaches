@@ -18,8 +18,8 @@ class Projet:
         self.nom = ""
         self.type_id = 0
         self.etat_id = 0
-        self.charge = 0
-        self.tempsPasse = 0
+        self.charge = 0.00
+        self.tempsPasse = 0.00
         self.descriptif = ""
         self.remarque = ""
 

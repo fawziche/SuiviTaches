@@ -90,6 +90,10 @@ class Ctrl_Projet(BDD_Projet):
         try:
             if arProjet.nom is None or arProjet.nom == "":
                 raise Exception ("Ctrl - projet - ajout : le nom du projet n'est pas renseigné !")
+            elif not self.estUnFloat(arProjet.charge):
+                raise Exception(f"Ctrl - projet - ajout : La charge '{arProjet.charge}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
+            elif not self.estUnFloat(arProjet.tempsPasse):
+                raise Exception(f"Ctrl - projet - ajout : Le temps passé '{arProjet.tempsPasse}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
             else:
                 super().ajouterProjet(arProjet)
 
@@ -97,10 +101,22 @@ class Ctrl_Projet(BDD_Projet):
             raise Exception(err.args[0])
 
 
+    def estUnFloat (self, arValue):
+        try:
+            float(arValue)
+            return True
+        except Exception as err:
+            return False
+
+
     def majProjet(self, arProjet):
         try:
             if arProjet.nom is None or arProjet.nom == "":
                 raise Exception ("Ctrl - projet - maj : le projet n'est pas renseigné pour l'ID = " + str(arProjet.id) + "' !")
+            elif not self.estUnFloat(arProjet.charge):
+                raise Exception(f"Ctrl - projet - maj : La charge '{arProjet.charge}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
+            elif not self.estUnFloat(arProjet.tempsPasse):
+                raise Exception(f"Ctrl - projet - maj : Le temps passé '{arProjet.tempsPasse}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
             else:
                 super().majProjet(arProjet)
 

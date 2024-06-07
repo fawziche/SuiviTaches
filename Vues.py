@@ -255,47 +255,81 @@ class vue_GestionProjet(QWidget):
 
 
     def maj(self):
-        # ctrl_TypeProjet = Ctrl_TypeProjet()
-        # unTypeProjet = TypeProjet()
-        # msgInfo = ""
-        # self.chpsErreur.setText("")
-        # self.table.selectColumn(0)   # pour prendre en compte une maj meme si on a oublié d'enlever le mode édit sur une cellule
-        # cbxMaj = QCheckBox()
-        # cbxDel = QCheckBox()
+        ctrl_Projet = Ctrl_Projet()
+        unProjet = Projet()
+        msgInfo = ""
+        self.chpsErreur.setText("")
+        self.table.selectColumn(0)   # pour prendre en compte une maj meme si on a oublié d'enlever le mode édit sur une cellule
+        cbxMaj = QCheckBox()
+        cbxDel = QCheckBox()
+        cmbType = QComboBox()
+        cmbEtat = QComboBox()
 
         try:
-            pass
-        #     # Update ou delete
-        #     for row in range(self.table.rowCount()-1):
-        #         cbxMaj = self.table.cellWidget(row, 0)
-        #         cbxDel = self.table.cellWidget(row, 1)
-        #         unTypeProjet.id = self.table.item(row, 2).text()
-        #         unTypeProjet.type = self.table.item(row, 3).text().strip()
+            # Update ou delete
+            for row in range(self.table.rowCount()-1):
+                cbxMaj = self.table.cellWidget(row, 0)
+                cbxDel = self.table.cellWidget(row, 1)
                 
-        #         if cbxMaj.isChecked or cbxDel.isChecked: 
-        #             if cbxDel.isChecked():
-        #                 ctrl_TypeProjet.deleteType(unTypeProjet)
-        #             elif cbxMaj.isChecked():
-        #                 ctrl_TypeProjet.majType(unTypeProjet)
+                if cbxMaj.isChecked or cbxDel.isChecked: 
+                    # ID
+                    unProjet.id = self.table.item(row, 2).text()
+                    # Nom
+                    unProjet.nom = self.table.item(row, 3).text().strip()
+                    # Type
+                    cmbType = self.table.cellWidget(row, 4)
+                    unProjet.type_id = cmbType.itemData(cmbType.currentIndex())
+                    # Etat
+                    cmbEtat = self.table.cellWidget(row, 5)
+                    unProjet.etat_id = cmbEtat.itemData(cmbEtat.currentIndex())
+                    # Charge
+                    unProjet.charge = self.table.item(row, 6).text().strip()
+                    # Temps passe
+                    unProjet.tempsPasse = self.table.item(row, 7).text().strip()
+                    # Descriptif
+                    unProjet.descriptif = self.table.item(row, 8).text().strip()
+                    # Remarque
+                    unProjet.remarque = self.table.item(row, 9).text().strip()
 
+                    if cbxDel.isChecked():
+                        ctrl_Projet.deleteProjet(unProjet)
+                    elif cbxMaj.isChecked():
+                        ctrl_Projet.majProjet(unProjet)
 
-        #     # Insert
-        #     tmp = self.table.item(len(self.data),3)
-        #     if tmp == None:
-        #         print("rien à ajouter")
-        #     else:
-        #         unTypeProjet.type = tmp.text().strip()
-        #         if (unTypeProjet.type != ""):
-        #             ctrl_TypeProjet.ajouterType(unTypeProjet)
+            # Insert
+            row = len(self.data)
+            if self.table.item(row, 3) == None:
+                print("rien à ajouter")
+            else:
+                # Nom
+                unProjet.nom = self.table.item(row, 3).text().strip()
+                # Type
+                cmbType = self.table.cellWidget(row, 4)
+                unProjet.type_id = cmbType.itemData(cmbType.currentIndex())
+                # Etat
+                cmbEtat = self.table.cellWidget(row, 5)
+                unProjet.etat_id = cmbEtat.itemData(cmbEtat.currentIndex())
+                # Charge
+                unProjet.charge = self.table.item(row, 6).text().strip()
+                # Temps passe
+                unProjet.tempsPasse = self.table.item(row, 7).text().strip()
+                # Descriptif
+                unProjet.descriptif = self.table.item(row, 8).text().strip()
+                # Remarque
+                unProjet.remarque = self.table.item(row, 9).text().strip()
+              
+                if (unProjet.nom != ""):
+                    ctrl_Projet.ajouterProjet(unProjet)
             
-        #     # Cloture de la BDD
-        #     ctrl_TypeProjet.cloreBDD()
-            
-        #     if msgInfo != "":
-        #         self.chpsInfo.setText(f"Maj de la BDD faite : {msgInfo}")
 
-        #     # Actualisation du tableau
-        #     self.remplirTableau()
+            # Cloture de la BDD
+            ctrl_Projet.cloreBDD()
+            
+            if msgInfo != "":
+                self.chpsInfo.setText(f"Maj de la BDD faite : {msgInfo}")
+
+            # Actualisation du tableau
+            self.remplirTableau()
         
         except Exception as err:
             self.chpsErreur.setText(f"Erreur : {err.args[0]}")
@@ -369,7 +403,20 @@ class vue_GestionProjet(QWidget):
 
                 i += 1
 
+            # On prépare la ligne pour "ajout"
             self.table.setItem(i, 2, QTableWidgetItem(">>Ajouter>>"))
+            cmbType = QComboBox()
+            for eltType in self.data_types:
+                cmbType.addItem(eltType[1], eltType[0])
+            self.table.setCellWidget(i, 4, cmbType)
+            cmbEtat = QComboBox()
+            for eltEtat in self.data_etats:
+                cmbEtat.addItem(eltEtat[1], eltEtat[0])
+            self.table.setCellWidget(i, 5, cmbEtat)
+
+            # On redimensionne automatiquement les cellules en fonction de leur contenu            
+            self.table.resizeRowsToContents()
+            self.table.resizeColumnsToContents()
 
             # On clot l'accès à la BDD
             ctrl_Projet.cloreBDD()

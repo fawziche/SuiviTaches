@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow,  QTabWidget, QWidget
 from Vues import *
+import mysql.connector 
 
 
 
@@ -54,7 +55,6 @@ try:
         window.show()
         sys.exit(app.exec_())
 
-        
         # unProjet = Projet()
         # unProjet.id = 5
         # unProjet.nom = "Paramétrage des progiciels"

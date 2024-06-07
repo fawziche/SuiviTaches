@@ -286,8 +286,8 @@ class BDD_Projet():
             unProjet.nom = row[0]
             unProjet.type_id = int(row[1])
             unProjet.etat_id = int(row[2])
-            unProjet.charge = int(row[3])
-            unProjet.tempsPasse = int(row[4])
+            unProjet.charge = float(row[3])
+            unProjet.tempsPasse = float(row[4])
             unProjet.descriptif = row[5]
             unProjet.remarque = row[6]
             print(unProjet)

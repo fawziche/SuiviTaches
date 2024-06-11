@@ -24,7 +24,7 @@ class Projet:
         self.remarque = ""
 
 
-class Taches:
+class Tache:
     def __init__(self):
         self.id = 0
         self.date = datetime.date.today()

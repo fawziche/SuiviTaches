@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS tTaches (
     id INT AUTO_INCREMENT,
     date DATETIME NOT NULL,
     projet_id int(10) NOT NULL,
-    tempsPasse int(5),
-    tempsPrevu int(5),
+    tempsPasse double,
+    tempsPrevu double,
     Description TEXT,
     PRIMARY KEY(id),
     FOREIGN KEY (projet_id) 

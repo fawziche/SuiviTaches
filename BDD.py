@@ -297,3 +297,109 @@ class BDD_Projet():
         except Exception as err:
             raise Exception("BDD - Projet - lireProjet : " + err.args[0])
         
+        
+
+# -----------------------------------------------------------------------------------
+class BDD_Tache():
+    # On ouvre la connexion
+    def __init__(self):
+        try:
+            self.conn = mysql.connector.connect(host="localhost",user="root",password="Saadia04", database="suiviTaches")
+
+        except Exception as err:
+            raise Exception("BDD - Tache - Open : " + err.args[0])
+
+
+    def cloreBDD(self):
+        try:
+            self.conn.close()
+
+        except Exception as err:
+            raise Exception("BDD - Tache - Close : " + err.args[0])
+        
+
+    def ajouterTache(self, arTache):
+        try:
+            cursor = self.conn.cursor()
+            
+            requete = """
+                INSERT INTO tTaches (date, projet_id, tempsPasse, tempsPrevu, description) 
+                VALUES (%s, %s, %s, %s, %s)"""
+            data = (arTache.date, arTache.projet_id, arTache.tempsPasse, arTache.tempsPrevu, arTache.description)
+            cursor.execute(requete, data)
+            self.conn.commit()
+
+            print(f"Tache ajoutée : {data}")
+            
+        except Exception as err:
+            raise Exception("BDD - Tache - ajout : " + err.args[0])
+        
+
+    def majTache(self, arTache):
+        try:
+            cursor = self.conn.cursor()
+            
+            requete = """
+                UPDATE tTaches SET date = (%s), projet_id = (%s), tempsPasse = (%s), tempsPrevu = (%s), description = (%s)
+                WHERE id = (%s) """
+            data = (arTache.date, arTache.projet_id, arTache.tempsPasse, arTache.tempsPrevu, arTache.description, arTache.id)
+            cursor.execute(requete, data)
+            self.conn.commit()
+
+            print(f"Tache maj : {data}")
+
+        except Exception as err:
+            raise Exception("BDD - tache - maj : " + err.args[0])
+        
+
+    def deleteTache(self, arTache):
+        try:
+            cursor = self.conn.cursor()
+            
+            requete = """DELETE FROM tTaches WHERE id = (%s)"""
+            cursor.execute(requete, (arTache.id,))
+            self.conn.commit()
+
+            print(f"Tache delete -> {arTache.id}")
+
+        except Exception as err:
+            raise Exception("BDD - Tache - delete : " + err.args[0])
+        
+
+    def lireTaches(self):
+        try:
+            data = []
+
+            cursor = self.conn.cursor()
+
+            cursor.execute("""SELECT id, date, projet_id, tempsPasse, tempsPrevu, description FROM tTaches""")
+            rows = cursor.fetchall()
+            for row in rows:
+                data.append((row))
+
+            return data
+        
+        except Exception as err:
+            raise Exception("BDD - Tache - lireTaches : " + err.args[0])
+        
+    
+    def lireTache(self, arTache):
+        try:
+            uneTache = arTache
+
+            cursor = self.conn.cursor()
+            requete = """SELECT date, projet_id, tempsPasse, tempsPrevu, description FROM tTaches WHERE id = (%s)"""
+            cursor.execute(requete, (arTache.id,))
+            row = cursor.fetchone()
+
+            uneTache.date = row[0]
+            uneTache.projet_id = int(row[1])
+            uneTache.tempsPasse = float(row[2])
+            uneTache.tempsPrevu = float(row[3])
+            uneTache.description = row[4]
+            print(uneTache)
+
+            return uneTache
+        
+        except Exception as err:
+            raise Exception("BDD - Tache - lireTache : " + err.args[0])

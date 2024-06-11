@@ -1,4 +1,6 @@
 from BDD import *
+from Utilitaires import *
+
 
 
 class Ctrl_EtatProjet(BDD_EtatProjet):
@@ -39,6 +41,7 @@ class Ctrl_EtatProjet(BDD_EtatProjet):
     
 
 
+
 class Ctrl_TypeProjet(BDD_TypeProjet):
     def __init__(self):
         try:
@@ -77,6 +80,7 @@ class Ctrl_TypeProjet(BDD_TypeProjet):
         
 
 
+
 class Ctrl_Projet(BDD_Projet):
     def __init__(self):
         try:
@@ -90,9 +94,9 @@ class Ctrl_Projet(BDD_Projet):
         try:
             if arProjet.nom is None or arProjet.nom == "":
                 raise Exception ("Ctrl - projet - ajout : le nom du projet n'est pas renseigné !")
-            elif not self.estUnFloat(arProjet.charge):
+            elif not Utilitaires.estUnFloat(arProjet.charge):  
                 raise Exception(f"Ctrl - projet - ajout : La charge '{arProjet.charge}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
-            elif not self.estUnFloat(arProjet.tempsPasse):
+            elif not Utilitaires.estUnFloat(arProjet.tempsPasse):
                 raise Exception(f"Ctrl - projet - ajout : Le temps passé '{arProjet.tempsPasse}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
             else:
                 super().ajouterProjet(arProjet)
@@ -101,24 +105,57 @@ class Ctrl_Projet(BDD_Projet):
             raise Exception(err.args[0])
 
 
-    def estUnFloat (self, arValue):
-        try:
-            float(arValue)
-            return True
-        except Exception as err:
-            return False
-
-
     def majProjet(self, arProjet):
         try:
             if arProjet.nom is None or arProjet.nom == "":
                 raise Exception ("Ctrl - projet - maj : le projet n'est pas renseigné pour l'ID = " + str(arProjet.id) + "' !")
-            elif not self.estUnFloat(arProjet.charge):
+            elif not Utilitaires.estUnFloat(arProjet.charge):
                 raise Exception(f"Ctrl - projet - maj : La charge '{arProjet.charge}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
-            elif not self.estUnFloat(arProjet.tempsPasse):
+            elif not Utilitaires.estUnFloat(arProjet.tempsPasse):
                 raise Exception(f"Ctrl - projet - maj : Le temps passé '{arProjet.tempsPasse}' n'est pas numérique pour l'ID = " + str(arProjet.id) + "' !")
             else:
                 super().majProjet(arProjet)
+
+        except Exception as err:
+            raise Exception(err.args[0])
+
+
+
+
+class Ctrl_Tache(BDD_Tache):
+    def __init__(self):
+        try:
+            super().__init__()
+
+        except Exception as err:
+            raise Exception(err.args[0])
+        
+
+    def ajouterTache(self, arTache):
+        try:
+            if arTache.date is None:
+                raise Exception ("Ctrl - tache - ajout : la date n'est pas renseignée !")
+            elif not Utilitaires.estUnFloat(arTache.tempsPasse):  
+                raise Exception(f"Ctrl - tache - ajout : Le temps passé '{arTache.tempsPasse}' n'est pas numérique !")
+            elif not Utilitaires.estUnFloat(arTache.tempsPrevu):
+                raise Exception(f"Ctrl - tache - ajout : Le temps prévu '{arTache.tempsPrevu}' n'est pas numérique !")
+            else:
+                super().ajouterTache(arTache)
+
+        except Exception as err:
+            raise Exception(err.args[0])
+
+
+    def majTache(self, arTache):
+        try:
+            if arTache.date is None:
+                raise Exception ("Ctrl - tache - maj : la date n'est pas renseignée pour l'ID = " + str(arTache.id) + "' !")
+            elif not Utilitaires.estUnFloat(arTache.tempsPasse):
+                raise Exception(f"Ctrl - tache - maj : Le temps passé '{arTache.tempsPasse}' n'est pas numérique pour l'ID = " + str(arTache.id) + "' !")
+            elif not Utilitaires.estUnFloat(arTache.tempsPrevu):
+                raise Exception(f"Ctrl - tache - maj : Le temps prévu '{arTache.tempsPrevu}' n'est pas numérique pour l'ID = " + str(arTache.id) + "' !")
+            else:
+                super().majTache(arTache)
 
         except Exception as err:
             raise Exception(err.args[0])

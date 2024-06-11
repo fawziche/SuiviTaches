@@ -1,7 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow,  QTabWidget, QWidget
 from Vues import *
-import mysql.connector 
 
 
 
@@ -16,6 +15,9 @@ class SuiviTacheFenetre(QMainWindow):
         #Initialisation des onglets
         self.tab_widget = QTabWidget()        
         
+        uneVue_GestionTache = vue_GestionTache()
+        self.tab_widget.addTab(uneVue_GestionTache, "Gestion des taches")
+
         uneVue_GestionProjet = vue_GestionProjet()
         self.tab_widget.addTab(uneVue_GestionProjet, "Gestion des projets")
 
@@ -53,29 +55,7 @@ try:
         app = QApplication(sys.argv)
         window = SuiviTacheFenetre()
         window.show()
-        sys.exit(app.exec_())
-
-        # unProjet = Projet()
-        # unProjet.id = 5
-        # unProjet.nom = "Paramétrage des progiciels"
-        # unProjet.type_id = 2
-        # unProjet.etat_id = 1
-        # unProjet.charge = 45
-        # unProjet.tempsPasse = 0        
-        # unProjet.descriptif = """Paramétrage du progiciel BIDON ! """
-        # unProjet.remarque = """ A ANALYSER """
-
-
-        # ctrl_Projet = Ctrl_Projet()
-
-        # ctrl_Projet.deleteProjet(unProjet)
-
-        # data = ctrl_Projet.lireProjets()
-        # for elt in data:
-        #     print (elt)
-
-        # ctrl_Projet.cloreBDD()     
-        
+        sys.exit(app.exec_())       
 
 except Exception as err:
     print(f"Erreur : {err.args[0]}")
